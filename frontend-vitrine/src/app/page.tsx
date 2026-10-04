@@ -1,6 +1,10 @@
 async function getProducts() {
+  const apiUrl =
+    process.env.STRAPI_INTERNAL_URL ||
+    process.env.NEXT_PUBLIC_API_URL;
+
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/products?populate=*`,
+    `${apiUrl}/api/products?populate=*`,
     {
       cache: "no-store",
     }
@@ -18,13 +22,6 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900">
-
-      
-      
-
-      
-
-      
 
       {/* Products */}
       <section id="produits" className="bg-white py-16">

@@ -1,0 +1,45 @@
+services:
+
+  backend:
+    build:
+      context: ./backend-accessoires
+    container_name: backend-accessoires
+    ports:
+      - "1337:1337"
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 1337
+      APP_KEYS: "key1,key2,key3,key4"
+      JWT_SECRET: "+BSbpsWt9oaI3anrXjXZ9It+4F92kUcIPAOHmWCSQrY="
+      API_TOKEN_SALT: "WtLeLuO9aXW+rMcHTp8LuNGnbgW281Ex1QT8M6+QuVw="
+      ADMIN_JWT_SECRET: "h59OOza9Gn8QMJmpnJkszGTL0XpnFXPKxEk8g4HCf7o="
+      TRANSFER_TOKEN_SALT: "EwNumtjpcZ6eIyHM9gGC8dwGtRglPJCaKfSnWCK1YN4="
+    volumes:
+      - strapi_data:/app/.tmp
+      - strapi_uploads:/app/public/uploads
+    networks:
+      - phonetech-network
+
+  frontend:
+    build:
+      context: ./frontend-vitrine
+    container_name: frontend-vitrine
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      STRAPI_INTERNAL_URL: http://backend:1337
+      NEXT_PUBLIC_API_URL: http://localhost:1337
+    depends_on:
+      - backend
+    networks:
+      - phonetech-network
+
+volumes:
+  strapi_data:
+  strapi_uploads:
+
+networks:
+  phonetech-network:
+    driver: bridge
